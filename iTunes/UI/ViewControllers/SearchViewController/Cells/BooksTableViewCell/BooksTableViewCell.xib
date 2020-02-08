@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15702" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15704"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="none" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="booksTableViewCell" rowHeight="112" id="KGk-i7-Jjw" customClass="BooksTableViewCell" customModule="iTunes" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="334" height="112"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="303" height="112"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="book.circle" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="ZWi-OU-UMT">
+                        <rect key="frame" x="20" y="16.5" width="79" height="79"/>
+                        <color key="tintColor" red="0.52941176469999995" green="0.5568627451" blue="0.80392156859999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="79" id="kx5-v3-d1M"/>
+                            <constraint firstAttribute="height" constant="80" id="sUQ-xR-kOg"/>
+                        </constraints>
+                    </imageView>
+                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="n2K-qY-Z9X">
+                        <rect key="frame" x="49.5" y="46" width="20" height="20"/>
+                    </activityIndicatorView>
+                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="5vn-Fw-HM9">
+                        <rect key="frame" x="107" y="16" width="188" height="65.5"/>
+                        <subviews>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Mustafa Kemal Atatürk" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="A3w-5N-1Kf">
+                                <rect key="frame" x="0.0" y="0.0" width="188" height="43"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="18"/>
+                                <color key="textColor" red="0.52941176469999995" green="0.5568627451" blue="0.80392156859999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="19.05.1919" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wS1-EB-1aA">
+                                <rect key="frame" x="0.0" y="51" width="188" height="14.5"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="12"/>
+                                <color key="textColor" red="0.52941176469999995" green="0.5568627451" blue="0.80392156859999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                    </stackView>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="5vn-Fw-HM9" firstAttribute="leading" secondItem="ZWi-OU-UMT" secondAttribute="trailing" constant="8" id="441-Kb-Gr1"/>
+                    <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="ZWi-OU-UMT" secondAttribute="bottom" constant="16" id="6UE-Cj-a8z"/>
+                    <constraint firstAttribute="trailing" secondItem="5vn-Fw-HM9" secondAttribute="trailing" constant="8" id="H93-Xm-yvO"/>
+                    <constraint firstItem="n2K-qY-Z9X" firstAttribute="centerX" secondItem="ZWi-OU-UMT" secondAttribute="centerX" id="PQN-o0-8DM"/>
+                    <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="5vn-Fw-HM9" secondAttribute="bottom" constant="12" id="Ppu-17-oAB"/>
+                    <constraint firstItem="n2K-qY-Z9X" firstAttribute="centerY" secondItem="ZWi-OU-UMT" secondAttribute="centerY" id="QQS-xI-1ca"/>
+                    <constraint firstItem="ZWi-OU-UMT" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="16" id="ToI-Bq-ne6"/>
+                    <constraint firstItem="5vn-Fw-HM9" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="16" id="keR-Er-XF7"/>
+                    <constraint firstItem="ZWi-OU-UMT" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" id="v3J-uE-n6I"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <connections>
+                <outlet property="activityIndicator" destination="n2K-qY-Z9X" id="Hfc-tY-Pqg"/>
+                <outlet property="bookImageView" destination="ZWi-OU-UMT" id="pyJ-Es-zQ2"/>
+                <outlet property="dateLabel" destination="wS1-EB-1aA" id="1fl-69-InL"/>
+                <outlet property="titleLabel" destination="A3w-5N-1Kf" id="SRj-Ih-OXM"/>
+            </connections>
+            <point key="canvasLocation" x="140.57971014492756" y="164.73214285714286"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="book.circle" catalog="system" width="64" height="60"/>
+    </resources>
+</document>
