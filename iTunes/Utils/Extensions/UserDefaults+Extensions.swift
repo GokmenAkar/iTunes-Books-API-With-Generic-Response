@@ -8,9 +8,9 @@
 import Foundation
 
 extension UserDefaults {
-    var favorites: [String]? {
+    var favoritesData: Data? {
         get {
-            UserDefaults.standard.array(forKey: #function) as? [String]
+            UserDefaults.standard.data(forKey: #function)
         } set {
             UserDefaults.standard.setValue(newValue, forKey: #function)
         }

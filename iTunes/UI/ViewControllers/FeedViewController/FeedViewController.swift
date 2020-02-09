@@ -90,6 +90,7 @@ class FeedViewController: UIViewController {
     }
     
     private func getFeedData() {
+        feedViewModel.setFavorites()
         feedViewModel.getFeed { [weak self] (error) in
             guard let self = self else { return }
             self.setFilterButton()
@@ -106,7 +107,12 @@ class FeedViewController: UIViewController {
 extension FeedViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if feedViewModel.isFiltered {
-            return feedViewModel.filteredBooks.count
+            if feedViewModel.favoriteBooks.count == 0 {
+                collectionView.setInfo(text: "There is no favorite books :(")
+            } else {
+                collectionView.backgroundView = nil
+            }
+            return feedViewModel.favoriteBooks.count
         } else {
             return feedViewModel.feedResponse == nil ? 0 : feedViewModel.feedResponse.feed.results.count
         }
@@ -117,7 +123,8 @@ extension FeedViewController: UICollectionViewDelegate, UICollectionViewDataSour
         if feedViewModel.feedResponse.feed.results.count - 1 == indexPath.row {
             getFeedData()
         }
-        cell.configureCell(book: feedViewModel.isFiltered ? feedViewModel.filteredBooks[indexPath.row] : feedViewModel.feedResponse.feed.results[indexPath.row])
+        cell.delegate = self
+        cell.configureCell(book: feedViewModel.isFiltered ? feedViewModel.favoriteBooks[indexPath.row] : feedViewModel.feedResponse.feed.results[indexPath.row])
         return cell
     }
     
@@ -126,10 +133,23 @@ extension FeedViewController: UICollectionViewDelegate, UICollectionViewDataSour
         if let detailViewController = storyboard.instantiateViewController(identifier: "detailViewController") as? DetailViewController {
             if let cell = collectionView.cellForItem(at: indexPath) as? FeedCollectionViewCell {
                 detailViewController.image = cell.bookImageView.image
-                detailViewController.book  = feedViewModel.feedResponse.feed.results[indexPath.row]
+                if feedViewModel.isFiltered {
+                    detailViewController.book  = feedViewModel.favoriteBooks[indexPath.row]
+                } else {
+                    detailViewController.book  = feedViewModel.feedResponse.feed.results[indexPath.row]
+                }
                 navigationController?.pushViewController(detailViewController, animated: true)
             }
         }
     }
 }
 
+extension FeedViewController: FeedCellFavoritesDelegate {
+    func addBookToFavorites(book: Book) {
+        feedViewModel.addFavorites(book: book)
+    }
+    
+    func removeBookFromFavorites(book: Book) {
+        feedViewModel.removeFromFavorites(book: book)
+    }
+}

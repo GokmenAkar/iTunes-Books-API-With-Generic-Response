@@ -30,29 +30,18 @@ class DetailViewController: UIViewController {
     
     fileprivate func setNavigationBar() {
         navigationController?.interactivePopGestureRecognizer?.delegate = nil
-        let image: UIImage = (book.isFavorite ? UIImage(systemName: "star.fill")! : UIImage(systemName: "star"))!
+        let image: UIImage = checkForFavorite(book: book) ? UIImage(systemName: "star.fill")! : UIImage(systemName: "star")!
         navigationButton = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(addFavorite))
         navigationItem.rightBarButtonItem = navigationButton
     }
     
     @objc func addFavorite() {
-        if var favorites = UserDefaults.standard.favorites {
-            if favorites.contains(book.id!) {
-                if let removeIndex = favorites.firstIndex(of: book.id!) {
-                    favorites.remove(at: removeIndex)
-                    UserDefaults.standard.favorites = favorites
-                    navigationButton.image = UIImage(systemName: "star")
-                }
-            } else {
-                favorites.append(book.id!)
-                addFavoritesForFeedResults(book: book)
-                UserDefaults.standard.favorites = favorites
-                navigationButton.image = UIImage(systemName: "star.fill")
-            }
+        if checkForFavorite(book: book) {
+            navigationButton.image = UIImage(systemName: "star")
+            addFavoritesForFeedResults(book: book, isFavorite: false)
         } else {
-            UserDefaults.standard.favorites = [book.id!]
-            addFavoritesForFeedResults(book: book)
             navigationButton.image = UIImage(systemName: "star.fill")
+            addFavoritesForFeedResults(book: book, isFavorite: true)
         }
     }
     
@@ -71,20 +60,30 @@ class DetailViewController: UIViewController {
         scrollView.contentInset = UIEdgeInsets(top: 4, left: 0, bottom: 4, right: 0)
     }
     
-    
-    //  We're are filtering favorites book on locale,
-    //  and if there is no current favorite book in the feed list we can't see in among favorites,
-    //  that's why we are manually adding the book here.
-    //  Ex: We fecthed 20 books first, but our new favorite is in 140th book.
-    fileprivate func addFavoritesForFeedResults(book: Book) {
+    fileprivate func addFavoritesForFeedResults(book: Book, isFavorite: Bool) {
         if let navigationController = tabBarController?.viewControllers?.first as? UINavigationController {
             if let feedViewController = navigationController.viewControllers.first as? FeedViewController {
-                var favoriteBook = book
-                favoriteBook.isFavorite = true
-                if !feedViewController.feedViewModel.filteredBooks.contains(favoriteBook) {
-                    feedViewController.feedViewModel.filteredBooks.append(favoriteBook)
+                if isFavorite {
+                    var favoriteBook = book
+                    favoriteBook.isFavorite = true
+                    feedViewController.feedViewModel.addFavorites(book: book)
+                } else {
+                    feedViewController.feedViewModel.removeFromFavorites(book: book)
                 }
             }
+        }
+    }
+    
+    fileprivate func checkForFavorite(book: Book) -> Bool {
+        if let navigationController = tabBarController?.viewControllers?.first as? UINavigationController {
+            if let feedViewController = navigationController.viewControllers.first as? FeedViewController {
+                let isFavorite: Bool = feedViewController.feedViewModel.favoriteBooks.contains(book)
+                return isFavorite
+            } else {
+                return false
+            }
+        } else {
+            return false
         }
     }
 }

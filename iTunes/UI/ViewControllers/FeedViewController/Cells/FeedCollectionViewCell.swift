@@ -9,6 +9,11 @@ import UIKit
 import SDWebImage
 import Hero
 
+protocol FeedCellFavoritesDelegate {
+    func addBookToFavorites(book: Book)
+    func removeBookFromFavorites(book: Book)
+}
+
 class FeedCollectionViewCell: UICollectionViewCell {
     
     static let identifier: String = "feedCollectionViewCell"
@@ -22,6 +27,8 @@ class FeedCollectionViewCell: UICollectionViewCell {
     
     var isImageSetted: Bool = false
     var book: Book!
+    
+    var delegate: FeedCellFavoritesDelegate?
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -69,22 +76,14 @@ class FeedCollectionViewCell: UICollectionViewCell {
     }
     
     @IBAction func addFavorites(_ sender: UIButton) {
-        if var favorites = UserDefaults.standard.favorites {
-            print("book id:" ,book.id!)
-            if favorites.contains(book.id!) {
-                if let removeIndex = favorites.firstIndex(of: book.id!) {
-                    favorites.remove(at: removeIndex)
-                    UserDefaults.standard.favorites = favorites
-                    sender.setImage(UIImage(systemName: "star"), for: .normal)
-                }
-            } else {
-                favorites.append(book.id!)
-                UserDefaults.standard.favorites = favorites
-                sender.setImage(UIImage(systemName: "star.fill"), for: .normal)
-            }
+        if book.isFavorite {
+            book.isFavorite = false
+            sender.setImage(UIImage(systemName: "star"), for: .normal)
+            delegate?.removeBookFromFavorites(book: book)
         } else {
-            UserDefaults.standard.favorites = [book.id!]
+            book.isFavorite = true
             sender.setImage(UIImage(systemName: "star.fill"), for: .normal)
+            delegate?.addBookToFavorites(book: book)
         }
     }
 }

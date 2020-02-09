@@ -44,14 +44,14 @@ class SearchViewModel {
     }
     
     func setForFavorites(completation: (() -> ())? = nil) {
-        if let favorites = UserDefaults.standard.favorites {
-            self.feedResponse.feed.results.enumerated().forEach {
-                if favorites.contains($0.element.id!) {
-                    self.feedResponse.feed.results[$0.offset].isFavorite = true
-                } else {
-                    self.feedResponse.feed.results[$0.offset].isFavorite = false
-                }
-            }
-        }
+//        if let favorites = UserDefaults.standard.favorites {
+//            self.feedResponse.feed.results.enumerated().forEach {
+//                if favorites.contains($0.element.id!) {
+//                    self.feedResponse.feed.results[$0.offset].isFavorite = true
+//                } else {
+//                    self.feedResponse.feed.results[$0.offset].isFavorite = false
+//                }
+//            }
+//        }
     }
 }

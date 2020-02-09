@@ -31,6 +31,11 @@ class SearchViewController: UIViewController {
         getData()
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        navigationItem.searchController?.searchBar.resignFirstResponder()
+    }
+    
     private func setTableViewCells() {
         let bookNib   = UINib(nibName: BooksTableViewCell.nibName , bundle: nil)
         let searchNib = UINib(nibName: SearchTableViewCell.nibName, bundle: nil)

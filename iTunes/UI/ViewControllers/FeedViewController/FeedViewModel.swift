@@ -19,14 +19,14 @@ class FeedViewModel {
     
     var feedResponse : FeedResponse!
     var firstResponse: FeedResponse!
-
+    
     var filterType: Filter = .all
-
+    
     var isFiltered: Bool = false
     var isLoading : Bool = false
     
-    var filteredBooks: [Book] = []
-
+    var favoriteBooks: [Book] = []
+    
     func getFeed(completation: @escaping (Error?) -> ()) {
         guard !isLoading, !isFiltered else { return }
         isLoading = true
@@ -55,36 +55,53 @@ class FeedViewModel {
         switch filterType {
         case .all:
             feedResponse = firstResponse
-            setForFavorites(completation: nil)
+            setForFavorites(nil)
             isFiltered = false
         case .newest:
             feedResponse = firstResponse
-            setForFavorites(completation: nil)
+            setForFavorites(nil)
             isFiltered = false
             feedResponse.feed.results.sort { $0.releaseDate! < $1.releaseDate! }
         case .oldest:
             feedResponse = firstResponse
-            setForFavorites(completation: nil)
+            setForFavorites(nil)
             isFiltered = false
             feedResponse.feed.results.sort { $0.releaseDate! > $1.releaseDate! }
         case .favorites:
             isFiltered = true
-            setForFavorites(completation: nil)
-            feedResponse.feed.results = feedResponse.feed.results.filter { $0.isFavorite }
+            setFavorites()
         }
         compleation()
     }
     
-    func setForFavorites(completation: (() -> ())? = nil) {
-        if let favorites = UserDefaults.standard.favorites {
-            self.feedResponse.feed.results.enumerated().forEach {
-                self.feedResponse.feed.results[$0.offset].isFavorite = true
-                if favorites.contains($0.element.id!) && !feedResponse.feed.results.contains(self.feedResponse.feed.results[$0.offset]) {
-                    self.filteredBooks.append(self.feedResponse.feed.results[$0.offset])
-                } else {
-                    self.feedResponse.feed.results[$0.offset].isFavorite = false
-                }
+    func setForFavorites(_ completation: (() -> ())? = nil) {
+        feedResponse.feed.results.enumerated().forEach {
+            if favoriteBooks.contains($0.element) {
+                feedResponse.feed.results[$0.offset].isFavorite = true
+            } else {
+                feedResponse.feed.results[$0.offset].isFavorite = false
             }
+        }
+    }
+    
+    func setFavorites() {
+        if let favoritesData = UserDefaults.standard.favoritesData {
+            favoriteBooks = convertDataToStruct(data: favoritesData)
+            favoriteBooks.enumerated().forEach {
+                favoriteBooks[$0.offset].isFavorite = true
+            }
+        }
+    }
+    
+    func addFavorites(book: Book) {
+        favoriteBooks.append(book)
+        UserDefaults.standard.favoritesData = convertStructToData(value: favoriteBooks)
+    }
+    
+    func removeFromFavorites(book: Book) {
+        if let index = favoriteBooks.firstIndex(of: book) {
+            favoriteBooks.remove(at: index)
+            UserDefaults.standard.favoritesData = convertStructToData(value: favoriteBooks)
         }
     }
 }
